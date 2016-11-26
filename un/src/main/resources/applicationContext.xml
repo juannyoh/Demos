@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:cache="http://www.springframework.org/schema/cache"  
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xmlns:util="http://www.springframework.org/schema/util" 
+    
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+          http://www.springframework.org/schema/beans/spring-beans.xsd   
+          http://www.springframework.org/schema/context   
+          http://www.springframework.org/schema/context/spring-context.xsd   
+          http://www.springframework.org/schema/aop   
+          http://www.springframework.org/schema/aop/spring-aop.xsd   
+          http://www.springframework.org/schema/tx    
+          http://www.springframework.org/schema/tx/spring-tx.xsd
+          http://www.springframework.org/schema/cache 
+          http://www.springframework.org/schema/cache/spring-cache.xsd
+          http://www.springframework.org/schema/data/jpa
+          http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd 
+          http://www.springframework.org/schema/util 
+          http://www.springframework.org/schema/util/spring-util.xsd">
+          
+    <context:annotation-config /> 
+    <util:properties id="configParam" location="classpath:config.properties" />
+    <context:component-scan base-package="com.ouye" />
+    
+    <!-- 定义实体管理器工厂 -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">  
+    	<property name="persistenceUnitName" value="SupermapJPA"/>
+    </bean>
+         
+    <!-- 配置事务管理器 -->  
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">  
+    	<property name="entityManagerFactory" ref="entityManagerFactory" />  
+    </bean> 
+       
+    <!-- 启用 annotation事务--> 
+    <tx:annotation-driven transaction-manager="transactionManager"/> 
+           
+    <!-- 配置Spring Data JPA扫描目录--> 
+    <jpa:repositories base-package="com.ouye.dao"/>
+    <jpa:repositories base-package="com.ouye.entity"/>
+    
+     <!-- 缓存配置(两种) -->    
+	<!-- 启用缓存注解功能(请将其配置在Spring主配置文件中) -->    
+	<cache:annotation-driven cache-manager="cacheManager"/>    
+	<!-- Spring自己的基于java.util.concurrent.ConcurrentHashMap实现的缓存管理器(该功能是从Spring3.1开始提供的) -->    
+	<!-- <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">    
+	    <property name="caches">    
+	        <set>    
+	            <bean name="myCache" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"/>    
+	        </set>    
+	    </property>    
+	</bean> -->    
+	    
+	<!-- 若只想使用Spring自身提供的缓存器,则注释掉下面的两个关于Ehcache配置的bean,并启用上面的SimpleCacheManager即可 -->    
+	<!-- Spring提供的基于的Ehcache实现的缓存管理器 -->    
+	<bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">    
+	    <property name="configLocation" value="ehcache.xml"/>    
+	</bean>    
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">    
+	    <property name="cacheManager" ref="cacheManagerFactory"/>    
+	</bean>
+    
+</beans> 
