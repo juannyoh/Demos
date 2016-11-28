@@ -55,7 +55,7 @@ public class IGeocodingServiceTest {
 
 	@Test
 	public final void testSearchAdmincodeByName() {
-		System.out.println(this.geocodingService.searchAdmincodeByName("成都市", 2));
+		System.out.println(this.geocodingService.searchAdmincodeByName("四川省","成都市",null,null, 2));
 	}
 
 }

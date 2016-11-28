@@ -275,7 +275,7 @@ public class GeocodingServiceImpl implements IGeocodingService {
 	}
 
 	@Override
-	public String searchAdmincodeByName(String cityname, int level) {
+	public String searchAdmincodeByName(String provicename,String cityname,String countyname,String townname, int level) {
 		String admincode=null;
 		DatasetVector dv = null;
 		//区县数据集
@@ -291,16 +291,16 @@ public class GeocodingServiceImpl implements IGeocodingService {
 		QueryParameter qp = new QueryParameter();
 		String filter = null;
 		if(level==1){
-			filter = "PROVINCE like '"+cityname+"%'";
+			filter = "PROVINCE like '"+provicename+"%'";
 			qp.setAttributeFilter(filter);
 		}else if(level==2){
-			filter = "CITY like '"+cityname+"%'";
+			filter = "PROVINCE like '"+provicename+"%' "+" and CITY like '"+cityname+"%'";
 			qp.setAttributeFilter(filter);
 		}else if(level==3){
-			filter = "COUNTY like '"+cityname+"%'";
+			filter = "PROVINCE like '"+provicename+"%'"+ " and COUNTY like '"+countyname+"%'";
 			qp.setAttributeFilter(filter);
 		}else{
-			filter = "TOWN like '"+cityname+"%'";
+			filter = "PROVINCE like '"+provicename+"%'"+" and COUNTY like '"+countyname+"%'"+" and TOWN like '"+townname+"%'";
 			qp.setAttributeFilter(filter);
 		}
 		qp.setHasGeometry(false);

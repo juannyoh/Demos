@@ -1,7 +1,6 @@
 package com.ouye.excelAdmincode;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -129,13 +128,13 @@ public class ExcelReaderWrite {
         try {
         	 wb = new XSSFWorkbook(is);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         sheet = wb.getSheetAt(0);
         // 得到总行数
         int rowNum = sheet.getLastRowNum();
         row = sheet.getRow(0);
-        int colNum = row.getPhysicalNumberOfCells();
+        int colNum = row.getLastCellNum();
         Cell cell=row.createCell(colNum);
 		cell.setCellValue("admincode");
         
@@ -298,15 +297,16 @@ public class ExcelReaderWrite {
             	adminlist=new ArrayList<String>();
             	for(AreaExcel area:arealist){
             		String admincode=null;
-            		if(area.getClevel()==1){
-            			admincode=geocodingService.searchAdmincodeByName(area.getProvice(),area.getClevel());
+            		admincode=geocodingService.searchAdmincodeByName(area.getProvice(),area.getCity(),area.getCounty(),area.getTown(),area.getClevel());
+            		/*if(area.getClevel()==1){
+            			admincode=geocodingService.searchAdmincodeByName(area.getProvice(),area.getCity(),area.getCounty(),area.getTown(),area.getClevel());
             		}else if(area.getClevel()==2){
             			admincode=geocodingService.searchAdmincodeByName(area.getCity(),area.getClevel());
             		}else if(area.getClevel()==3){
             			admincode=geocodingService.searchAdmincodeByName(area.getCounty(),area.getClevel());
             		}else if(area.getClevel()==4){
             			admincode=geocodingService.searchAdmincodeByName(area.getTown(),area.getClevel());
-            		}
+            		}*/
             		area.setAdmincode(admincode);
             		adminlist.add(admincode);
             	}
@@ -319,7 +319,7 @@ public class ExcelReaderWrite {
             
             areaReadis.close();
             areaWriteout.close();
-            System.out.println(geocodingService.searchAdmincodeByName("成都", 2));
+            System.out.println(geocodingService.searchAdmincodeByName("四川","成都",null,null, 2));
             
 
         } catch (Exception e) {

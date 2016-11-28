@@ -84,6 +84,6 @@ public interface IGeocodingService {
 	 * @Author Juannyoh
 	 * 2016-11-22下午8:19:42
 	 */
-	public String searchAdmincodeByName(String cityname,int level);
+	public String searchAdmincodeByName(String provicename,String cityname,String countyname,String townname, int level);
 	
 }
