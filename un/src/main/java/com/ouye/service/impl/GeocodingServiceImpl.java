@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.ouye.service.IGeocodingService;
@@ -51,12 +52,14 @@ public class GeocodingServiceImpl implements IGeocodingService {
 	private static final Logger LOGGER = Logger.getLogger(GeocodingServiceImpl.class);
 	
 	@Override
+	@Cacheable(value = "elementCache", key="#admincode.concat(,).concat(#level)") 
 	public List<Map<String, Object>> getAdminElement(String admincode, int level) {
 		LOGGER.info("## query parameter ["+admincode+","+level+"]");
 		return searchByUDB.getAdminElements(admincode, level);
 	}
 
 	@Override
+	@Cacheable(value = "geoCache", key="#admincode.concat(,).concat(#level)") 
 	public Map<String, Object> getAdminGeoByCode(String admincode, int level) {
 		LOGGER.info("## getAdminGeoByCode["+admincode+","+level+"]");
 		Map<String,Object> adminGeo = null;

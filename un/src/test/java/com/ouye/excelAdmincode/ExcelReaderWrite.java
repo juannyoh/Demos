@@ -265,25 +265,26 @@ public class ExcelReaderWrite {
 				"applicationContext.xml");
     	
         try {
+          ExcelReaderWrite excelReader = new ExcelReaderWrite();
+        	
             // 对读取Excel表格标题测试
-            InputStream is = new FileInputStream("E:\\111.xlsx");
-            ExcelReaderWrite excelReader = new ExcelReaderWrite();
-            String[] title = excelReader.readExcelTitle(is);
-            System.out.println("获得Excel表格的标题:");
-            for (String s : title) {
-                System.out.print(s + " ");
-            }
-            is.close();
+//            InputStream is = new FileInputStream("E:\\111.xlsx");
+//            String[] title = excelReader.readExcelTitle(is);
+//            System.out.println("获得Excel表格的标题:");
+//            for (String s : title) {
+//                System.out.print(s + " ");
+//            }
+//            is.close();
 
             // 对读取Excel表格内容测试
-            InputStream is2 = new FileInputStream("E:\\111.xlsx");
-            Map<Integer, String> map = excelReader.readExcelContent(is2);
-            System.out.println("获得Excel表格的内容:");
-            for (int i = 1; i <= map.size(); i++) {
-                System.out.println(map.get(i));
-                
-            }
-            is2.close();
+//            InputStream is2 = new FileInputStream("E:\\111.xlsx");
+//            Map<Integer, String> map = excelReader.readExcelContent(is2);
+//            System.out.println("获得Excel表格的内容:");
+//            for (int i = 1; i <= map.size(); i++) {
+//                System.out.println(map.get(i));
+//                
+//            }
+//            is2.close();
             
             //读取区划的excel
             InputStream areais = new FileInputStream("E:\\行政区划生成模版.xlsx");

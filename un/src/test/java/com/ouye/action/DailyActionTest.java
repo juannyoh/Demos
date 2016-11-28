@@ -28,6 +28,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +38,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(locations = { "classpath*:/applicationContext.xml",
-		"classpath*:/spring-servlet.xml" })
+@WebAppConfiguration(value="src/main/webapp")
+@ContextConfiguration(locations = { "classpath:spring-servlet.xml",
+		"classpath:applicationContext.xml" })
 @TransactionConfiguration(defaultRollback = false)
 @Transactional
 public class DailyActionTest {
@@ -72,6 +73,7 @@ public class DailyActionTest {
 		out.println("######1:" + list);
 	}
 
+	@Ignore
 	@Test
 	public void testGetDailyPointCounts() {
 		List<Map<String, Object>> list = this.dailyAction
@@ -87,13 +89,25 @@ public class DailyActionTest {
 		assertThat("eee.df",anyOf(Matchers.startsWith("s"),Matchers.endsWith(".df")));
 	}
 
-	@Ignore
 	@Test
 	public void testGetDailyOrderCounts() throws Exception {
-		mockMvc.perform(
-				(post("/daily/dailyordercounts").param("eid",
+		ResultActions postresult=mockMvc.perform(
+				(MockMvcRequestBuilders.post("/daily/dailyordercounts").param("eid",
 						"40288e9f48625c010148625c07160000")))
-				.andExpect(status().isOk()).andDo(print());
+				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+	
+		ResultActions getresult=mockMvc.perform(
+				(MockMvcRequestBuilders.get("/daily/dailyordercounts").param("eid",
+						"40288e9f48625c010148625c07160000")))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+		
+		
+		
+		MvcResult mvcgetresult=getresult.andReturn();
+		System.out.println("******"+mvcgetresult.getResponse().getContentAsString());
+		
+		MvcResult mvcpostresult=postresult.andReturn();
+		System.out.println("******"+mvcpostresult.getResponse().getContentAsString());
 	}
 
 	@Ignore
@@ -101,7 +115,7 @@ public class DailyActionTest {
 	public void testGetDailyFendanApiCounts() {
 		try {
 			ResultActions actions = mockMvc
-					.perform((post("/daily/dailyfendanapicounts").param("eid",
+					.perform((MockMvcRequestBuilders.post("/daily/dailyfendanapicounts").param("eid",
 							"8a04a77b4cbc865c014cc0b8df9c0019")));
 
 			MvcResult mvcResult = actions.andReturn();
