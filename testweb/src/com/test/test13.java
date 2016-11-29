@@ -20,7 +20,7 @@ public class test13 {
 		}
 	}
 	
-	public static void xxx () {
+	public static void xxx(){
 		try {
 			int x=10/0;
 		} catch (Exception e) {

@@ -33,13 +33,9 @@ import com.supermap.data.Workspace;
   
     
   
-public class ExcelHandle   
+public class ExcelHandle{   
   
-{   
-  
-    public ExcelHandle()   
-  
-    {   
+    public ExcelHandle(){   
   
     }   
   
@@ -118,9 +114,7 @@ public class ExcelHandle
     
     /***读取Excel*/  
   
-    public static List<HashMap<String,Object>> readExcel(String filePath)   
-  
-    {   
+    public static List<HashMap<String,Object>> readExcel(String filePath){   
   
     	List<HashMap<String,Object>> resultlist=new ArrayList<HashMap<String,Object>>();
     	try  
@@ -156,9 +150,7 @@ public class ExcelHandle
   
             //获取指定单元格的对象引用   
   
-            for (int i = 1; i < rsRows; i++)   
-  
-            {   
+            for (int i = 1; i < rsRows; i++){   
   
             	String x="";
             	String y="";
@@ -187,9 +179,7 @@ public class ExcelHandle
   
         }   
   
-        catch(Exception e)   
-  
-        {   
+        catch(Exception e){   
   
             e.printStackTrace();   
   
@@ -200,13 +190,9 @@ public class ExcelHandle
   
     /**输出Excel*/  
   
-    public static void writeExcel(OutputStream os)   
+    public static void writeExcel(OutputStream os){   
   
-    {   
-  
-        try  
-  
-        {   
+        try{   
   
         	  
             WritableWorkbook wwb = Workbook.createWorkbook(os);   
@@ -248,9 +234,7 @@ public class ExcelHandle
   
         }   
   
-        catch(Exception e)   
-  
-        {   
+        catch(Exception e){   
   
             e.printStackTrace();   
   
@@ -261,9 +245,7 @@ public class ExcelHandle
    
     //测试   
   
-    public static void main(String args[])   
-  
-    {   
+    public static void main(String args[]){   
   
         try  
   

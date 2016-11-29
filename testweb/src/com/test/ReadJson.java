@@ -167,8 +167,7 @@ public class ReadJson {
 				System.out.println();
 			}*/
 			// 利用已经创建的Excel工作薄创建新的可写入的Excel工作薄
-			jxl.write.WritableWorkbook wwb = Workbook.createWorkbook(new File(
-					"E:/temp/temp.xlsx"), rwb);
+			jxl.write.WritableWorkbook wwb = Workbook.createWorkbook(new File("E:/temp/temp.xlsx"), rwb);
 			// 读取第一张工作表
 			jxl.write.WritableSheet ws = wwb.getSheet(0);
 			// 获取指定单元格的对象引用

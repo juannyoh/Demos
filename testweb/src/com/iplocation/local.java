@@ -65,8 +65,7 @@ public class local {
 				HttpResponse response = httpclient.execute(httppost);
 				if (response.getStatusLine().getStatusCode() == 200) {
 					/*读返回数据*/
-					String conResult = EntityUtils.toString(response
-							.getEntity());
+					String conResult = EntityUtils.toString(response.getEntity());
 					JSONObject sobj = new JSONObject();
 					sobj = sobj.fromObject(conResult);
 					String result = sobj.getString("result");
