@@ -36,8 +36,7 @@ public class APIFendanEntity extends IdEntity implements Serializable {
 
 	public APIFendanEntity(String address, String userid, String eid,
 			String deptid, String dcode, String admincode, String province,
-			String city, String county, String areaid,String resulttype,Date fendanTime,BigDecimal smx
-			,BigDecimal smy) {
+			String city, String county, String areaid,String resulttype,Date fendanTime,BigDecimal smx,BigDecimal smy){
 		this.address = address;
 		this.userid = userid;
 		this.eid = eid;
