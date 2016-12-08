@@ -33,6 +33,9 @@ public class Test14 {
 		int o = Integer.parseInt(a, 8); // 8进制
 		System.out.println(d);
 		System.out.println(o);
+		
+		int x=11,y=3;
+		System.out.println(x%y);
 	}
 
 }

@@ -26,8 +26,8 @@ public class ReadUdb {
 	static String datesetname="county";
 	
 	public static void main(String[] args) {
-		read();
-		String admincode="650000";
+//		read(filepath,datesetname);
+		/*String admincode="650000";
 		  List resultList = null;
 		  QueryParameter qp = new QueryParameter();
 	      qp.setCursorType(CursorType.STATIC);
@@ -36,9 +36,9 @@ public class ReadUdb {
 	      qp.setResultFields(new String[] { "ABBREVIATION", "ADMINCODE" });
 	      qp.setHasGeometry(false);
 	      qp.setOrderBy(new String[]{"ADMINCODE"});
-	      Recordset recordset = null;
+	      Recordset recordset = null;*/
 	      try {
-	        recordset = APIdatasetVector.query(qp);
+	        /*recordset = APIdatasetVector.query(qp);
 	        if ((recordset != null) && (recordset.getRecordCount() > 0)) {
 	          resultList = new ArrayList();
 	          for (recordset.moveFirst(); !recordset.isEOF(); recordset.moveNext()) {
@@ -54,31 +54,24 @@ public class ReadUdb {
 	            resultList.add(map);
 	          }
 	          System.out.println(resultList);
-	        }
+	        }*/
+	        
+	        
+	        read("F:\\1.udb","New_Point");
+	        System.out.println(APIdatasetVector.getPrjCoordSys().getType());
+	        
+	        
+	        
 	      } catch (Exception e) {
-	    	System.out.println(resultList);
 	        e.printStackTrace();
 	      } finally {
-	    	  recordset.close();
 	    	  APIdatasetVector.close();
 	      }
 	      
 	}
 	
 	
-	public static void read(){
-		/*BasePathAnalystEngine.APIworkspace = new Workspace();
-		WorkspaceConnectionInfo apiworkspaceConnectionInfo = new WorkspaceConnectionInfo();
-		apiworkspaceConnectionInfo.setType(WorkspaceType.SMWU);
-		apiworkspaceConnectionInfo.setServer(this.apiworkspacePath);
-		BasePathAnalystEngine.APIworkspace.open(apiworkspaceConnectionInfo);
-		if (BasePathAnalystEngine.APIworkspace.getDatasources().getCount() == 0) {
-			logger.error("打开数据源失败");
-			return false;
-		}
-		
-		Datasource apidatasource = BasePathAnalystEngine.APIworkspace.getDatasources().get(0);
-		*/
+	public static void read(String filepath,String datesetname){
 		Workspace workspace = new Workspace();
 		DatasourceConnectionInfo datasourceconnection = new DatasourceConnectionInfo();
 		datasourceconnection.setEngineType(EngineType.UDB);

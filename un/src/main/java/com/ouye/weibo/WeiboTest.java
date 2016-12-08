@@ -1,4 +1,4 @@
-package com.ouye.weibo;
+/*package com.ouye.weibo;
 
 import weibo4j.Status;
 import weibo4j.Weibo;
@@ -6,10 +6,10 @@ import weibo4j.Weibo;
 
 public class WeiboTest { 
 
-	/**
+	*//**
 	 * 发布一条微博信息  ---fail
 	 * @param args
-	 */
+	 *//*
 	public static void main(String[] args) {
 		System.setProperty("weibo4j.oauth.consumerKey", Weibo.CONSUMER_KEY);
     	System.setProperty("weibo4j.oauth.consumerSecret", Weibo.CONSUMER_SECRET);
@@ -35,3 +35,4 @@ public class WeiboTest {
 		return weibo;
 	}
 }
+*/

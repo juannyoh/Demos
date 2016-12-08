@@ -17,7 +17,7 @@ import com.google.common.io.Files;
 
 public class ReadLogFiles {
 	
-	static String basefileurl="F:\\document\\产品\\statistics.logs[20161114-20161120]";
+	static String basefileurl="F:\\document\\产品\\statistics.log[20161122-20161204]";
 	
 	static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -27,7 +27,7 @@ public class ReadLogFiles {
 		
 		List<APIFendanEntity> apis=new ArrayList<APIFendanEntity>();
 		
-		String fileurls="statistics.log.#date#.log";
+		String fileurls="statistics.log.#date#";
 		
 		Calendar calendar=Calendar.getInstance();
 		try {

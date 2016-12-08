@@ -66,7 +66,7 @@ public class DailyActionTest {
 		this.mockMvc = webAppContextSetup(this.wecContext).build();
 	}
 
-	@Ignore
+//	@Ignore
 	@Test
 	public void testGetDailyUserCounts() {
 		List<Map<String, Object>> list = this.dailyAction.getDailyUserCounts();
@@ -89,6 +89,7 @@ public class DailyActionTest {
 		assertThat("eee.df",anyOf(Matchers.startsWith("s"),Matchers.endsWith(".df")));
 	}
 
+	@Ignore
 	@Test
 	public void testGetDailyOrderCounts() throws Exception {
 		ResultActions postresult=mockMvc.perform(
