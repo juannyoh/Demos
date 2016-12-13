@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.ouye.bean.UserEntity;
+import com.ouye.dao.MutiUserDao;
 import com.ouye.dao.UserDao;
 import com.ouye.service.UserService;
 
@@ -17,6 +19,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Resource
 	private UserDao userDao;
+	
+	@Resource
+	private MutiUserDao mutiUserDao;
 
 	@Override
 	public List<Map<String, Object>> getDailyUserCounts() {
@@ -33,6 +38,12 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return maplist;
+	}
+
+	@Override
+	public void addUser(UserEntity user) {
+//		this.userDao.save(user);
+		this.mutiUserDao.saveUser(user);
 	}
 
 }

@@ -24,10 +24,14 @@ public class IGeocodingServiceTest {
 	@Resource
 	IGeocodingService geocodingService;
 	
+	static String basefileurl="F:\\document\\产品\\statistics.log[20161122-20161204]";
+	
 	@Test
 	public void TestWriteApiLogFile(){
 		try {
-			List<APIFendanEntity> apiloglist=ReadLogFiles.readLogs("2016-11-22", 13, "8a04a77b4d7a6206014ddb66af2f01a2");
+			ReadLogFiles readLogFiles=new ReadLogFiles(basefileurl);
+			//type==1 地址分单日志 type==2 坐标分单日志
+			List<APIFendanEntity> apiloglist=readLogFiles.ReadLogsByType("2016-12-12", 1, "8a04a77b4d7a6206014ddb66af2f01a2",1);
 			for(int i=0;i<apiloglist.size();i++){
 				APIFendanEntity fendan=apiloglist.get(i);
 				double x=fendan.getSmx().doubleValue();

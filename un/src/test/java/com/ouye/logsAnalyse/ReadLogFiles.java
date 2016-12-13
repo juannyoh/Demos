@@ -19,10 +19,47 @@ public class ReadLogFiles {
 	
 	static String basefileurl="F:\\document\\产品\\statistics.log[20161122-20161204]";
 	
+	public ReadLogFiles(String basefileurl2) {
+		basefileurl=basefileurl2;
+	}
+	
 	static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 	
 	static SimpleDateFormat sdftime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
+	/**
+	 * 读取日志
+	 * type==1  地址分单日志
+	 * type==2 坐标分单日志
+	 * @param bdate
+	 * @param dates
+	 * @param userkey
+	 * @param type
+	 * @return
+	 * @Author Juannyoh
+	 * 2016-12-13下午2:56:10
+	 */
+	public List<APIFendanEntity> ReadLogsByType(String bdate,int dates,String userkey,int type){
+		switch (type) {
+		case 1:
+			return readLogs(bdate, dates, userkey);
+		case 2:
+			return readLogsXY(bdate, dates, userkey);
+		default:
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * 地址分单
+	 * @param bdate
+	 * @param dates
+	 * @param userkey
+	 * @return
+	 * @Author Juannyoh
+	 * 2016-12-13上午9:54:46
+	 */
 	public static List<APIFendanEntity> readLogs(String bdate,int dates,String userkey) {
 		
 		List<APIFendanEntity> apis=new ArrayList<APIFendanEntity>();
@@ -115,9 +152,9 @@ public class ReadLogFiles {
 								fendans.setAreaid(jsonresult.getString("areaName"));
 							}
 							
-							if(!(fendans.getResulttype().equals("解析成功"))){
+//							if(!(fendans.getResulttype().equals("解析成功"))){
 								apis.add(fendans);
-							}
+//							}
 						}
 					}
 				}
@@ -175,4 +212,117 @@ public class ReadLogFiles {
 	}
 	
 	
+	/**
+	 * 通过坐标分单日志解析
+	 * @param bdate
+	 * @param dates
+	 * @param userkey
+	 * @return
+	 * @Author Juannyoh
+	 * 2016-12-13上午9:54:18
+	 */
+	public static List<APIFendanEntity> readLogsXY(String bdate,int dates,String userkey) {
+		
+		List<APIFendanEntity> apis=new ArrayList<APIFendanEntity>();
+		
+		String fileurls="statisticsXY.log#date#.log";
+		
+		Calendar calendar=Calendar.getInstance();
+		try {
+			calendar.setTime(sdf.parse(bdate));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		
+		List<String> datelist=new ArrayList<String>();
+		for(int i=0;i<dates;i++){
+			datelist.add(sdf.format(calendar.getTime()));
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		System.out.println(datelist);
+		
+		try {
+			for(int i=0;i<datelist.size();i++){
+				System.out.println(datelist.get(i));
+				File file=new File(basefileurl+File.separator+fileurls.replaceAll("#date#", datelist.get(i)));
+				List<String> lineslist = Files.readLines(file, Charsets.UTF_8);
+				
+				//单个文件
+				for(int j=0;j<lineslist.size();j=j+11){
+					APIFendanEntity fendanapi=new APIFendanEntity();
+					String keyvalues[]=lineslist.get(j+1).split("=");
+					if(keyvalues[0].equals("key")){
+						if(keyvalues[1].equals(userkey)){
+							fendanapi.setUserid(keyvalues[1]);
+						}else{
+							continue;
+						}
+					}
+					
+					String eidvalues[]=lineslist.get(j+2).split("=");
+					fendanapi.setEid(eidvalues[1]);
+					
+					String deptidvalues[]=lineslist.get(j+3).split("=");
+					fendanapi.setDeptid(deptidvalues[1]);
+					
+					String dcodevalues[]=lineslist.get(j+4).split("=");
+					fendanapi.setDcode(dcodevalues[1]);
+					
+					
+					String paramvalues[]=lineslist.get(j+5).split("=");
+					
+					//解析参数
+					DistributeXYParam dp=null;
+					List<DistributePoint> pointparam =null;
+					try {
+						dp= JSON.parseObject(paramvalues[1], DistributeXYParam.class);
+						pointparam = dp==null?null:dp.getPoints();
+					} catch (Exception e) {
+						continue;
+					}
+					
+					String resultvalues[]=lineslist.get(j+6).split("=");
+					JSONArray jsonarray=null;
+					boolean flag=true;
+					try {
+						jsonarray=JSON.parseObject(resultvalues[1]).getJSONObject("result").getJSONArray("results");
+					} catch (Exception e) {
+						flag=false;
+						System.out.println(i+","+j);
+					}
+					
+					String compltetimes[]=lineslist.get(j+7).split("=");
+					fendanapi.setFendanTime(sdftime.parse(compltetimes[1]));
+					
+					if(pointparam!=null&&pointparam.size()>0){
+						for(int k=0;k<pointparam.size();k++){
+							APIFendanEntity fendans=cloneOne(fendanapi);
+//							fendans.setAddress(addressparam.get(k).getAddress());
+							fendans.setOrderid(pointparam.get(k).getId());
+							if(!flag){
+								fendans.setResulttype("其他");
+								fendans.setSmx(new BigDecimal(pointparam.get(k).getX()));
+								fendans.setSmy(new BigDecimal(pointparam.get(k).getY()));
+								fendans.setAreaid(null);
+							}else{
+								JSONObject jsonresult=jsonarray.getJSONObject(k);
+								fendans.setResulttype(getResultTypeDesc(jsonresult.getString("resultType")));
+								fendans.setSmx(jsonresult.getBigDecimal("x"));
+								fendans.setSmy(jsonresult.getBigDecimal("y"));
+								fendans.setAreaid(jsonresult.getString("areaName"));
+							}
+							
+//							if(!(fendans.getResulttype().equals("解析成功"))){
+								apis.add(fendans);
+//							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return apis;
+	}
 }
